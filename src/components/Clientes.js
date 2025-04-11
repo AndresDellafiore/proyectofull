@@ -32,21 +32,26 @@ const Clients = () => {
         <p>No hay clientes registrados</p>
       ) : (
         <ul>
-          {clients.map(client => (
-            <li key={client.clientId}>
-              <p><strong>{client.nombre} {client.apellido}</strong></p>
-              <p>Email: {client.mail}</p>
-              <p>Cuenta: {client.account.accountNumber}</p>
-              <p>Balance: ${client.account.balance}</p>
-              <h4>Vehículos</h4>
-              {client.vehicles.map(vehicle => (
-                <div key={vehicle.vehicleId}>
-                  <p>{vehicle.marca} {vehicle.modelo} ({vehicle.dominio})</p>
-                </div>
-              ))}
-            </li>
-          ))}
-        </ul>
+  {clients.map(client => (
+    <li key={client.clientId}>
+      <p><strong>{client.nombre} {client.apellido}</strong></p>
+      <p>Email: {client.mail}</p>
+      <p>Cuenta: {client.account?.accountNumber || 'No disponible'}</p>
+      <p>Balance: ${client.account?.balance ?? 0}</p>
+
+      <h4>Vehículos</h4>
+      {client.vehicles.length > 0 ? (
+        client.vehicles.map(vehicle => (
+          <div key={vehicle.vehicleId}>
+            <p>{vehicle.marca} {vehicle.modelo} ({vehicle.dominio})</p>
+          </div>
+        ))
+      ) : (
+        <p>Sin vehículos</p>
+      )}
+    </li>
+  ))}
+</ul>
       )}
     </div>
   );
