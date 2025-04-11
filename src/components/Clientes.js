@@ -4,17 +4,26 @@ import axios from 'axios';
 const Clients = () => {
   const [clients, setClients] = useState([]);
 
-  useEffect(() => {
-    const fetchClients = async () => {
-      try {
-        const response = await axios.get('http://localhost:5007/api/Client/GetClients');
-        setClients(response.data);
-      } catch (error) {
-        console.error("Error fetching clients", error);
-      }
-    };
-    fetchClients();
-  }, []);
+ useEffect(() => {
+  const fetchClients = async () => {
+    try {
+      const response = await axios.get('http://localhost:5007/api/Client/List');
+      const rawClients = Array.isArray(response.data) ? response.data : response.data.$values;
+
+      const cleanedClients = rawClients.map(client => ({
+        ...client,
+        vehicles: Array.isArray(client.vehicles?.$values) ? client.vehicles.$values : [],
+        account: client.account || {} // En caso de que sea null
+      }));
+
+      setClients(cleanedClients);
+    } catch (error) {
+      console.error("Error fetching clients", error);
+    }
+  };
+
+  fetchClients();
+}, []);
 
   return (
     <div>
