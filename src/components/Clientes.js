@@ -26,7 +26,7 @@ const Clients = () => {
 }, []);
 
   return (
-    <div>
+    <div className="container">
       <h2>Clientes</h2>
       {clients.length === 0 ? (
         <p>No hay clientes registrados</p>
