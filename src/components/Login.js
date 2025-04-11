@@ -9,7 +9,8 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:5007/api/Client/Login", { email, password });
+      // Aquí cambiamos 'email' por 'mail'
+      const response = await axios.post("http://localhost:5007/api/Client/Login", { mail: email, password });
       if (response.status === 200) {
         // Redirigir al Dashboard
         navigate('/dashboard');

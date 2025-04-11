@@ -1,34 +1,47 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const Clientes = () => {
-  const [clientes, setClientes] = useState([]);
+const Clients = () => {
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5007/api/Client/List")
-      .then((res) => setClientes(res.data))
-      .catch((err) => console.error("Error al cargar clientes", err));
+    const fetchClients = async () => {
+      try {
+        const response = await axios.get('http://localhost:5007/api/Client/GetClients');
+        setClients(response.data);
+      } catch (error) {
+        console.error("Error fetching clients", error);
+      }
+    };
+    fetchClients();
   }, []);
 
   return (
     <div>
       <h2>Clientes</h2>
-      {clientes.map((cli) => (
-        <div key={cli.clientId} style={{ border: "1px solid #ccc", padding: "10px", margin: "10px" }}>
-          <p><strong>Nombre:</strong> {cli.nombre} {cli.apellido}</p>
-          <p><strong>Domicilio:</strong> {cli.domicilio}</p>
-          <p><strong>Email:</strong> {cli.mail}</p>
-          <p><strong>Cuenta:</strong> {cli.account?.accountNumber} - ${cli.account?.balance}</p>
-          <h4>Vehículos</h4>
-          {cli.vehicles?.map((veh, index) => (
-            <div key={index}>
-              <p>{veh.marca} {veh.modelo} ({veh.dominio})</p>
-            </div>
+      {clients.length === 0 ? (
+        <p>No hay clientes registrados</p>
+      ) : (
+        <ul>
+          {clients.map(client => (
+            <li key={client.clientId}>
+              <p><strong>{client.nombre} {client.apellido}</strong></p>
+              <p>Email: {client.mail}</p>
+              <p>Cuenta: {client.account.accountNumber}</p>
+              <p>Balance: ${client.account.balance}</p>
+              <h4>Vehículos</h4>
+              {client.vehicles.map(vehicle => (
+                <div key={vehicle.vehicleId}>
+                  <p>{vehicle.marca} {vehicle.modelo} ({vehicle.dominio})</p>
+                </div>
+              ))}
+            </li>
           ))}
-        </div>
-      ))}
+        </ul>
+      )}
     </div>
   );
 };
 
-export default Clientes;
+export default Clients;
+
