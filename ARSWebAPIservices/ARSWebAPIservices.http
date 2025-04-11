@@ -1,0 +1,6 @@
+@ARSWebAPIServices_HostAddress = http://localhost:5007
+
+GET {{ARSWebAPIServices_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
