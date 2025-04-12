@@ -12,7 +12,7 @@ const Cuentas = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <h2>Balances de Cuentas</h2>
       {cuentas.length === 0 ? (
         <p>No hay cuentas cargadas.</p>

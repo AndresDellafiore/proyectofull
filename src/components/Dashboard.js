@@ -1,10 +1,20 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("user"); // o tu forma de validar
+    if (!isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, []);
+
   return (
-    <div>
+    <div className="container">
       <h2>Dashboard</h2>
-      <p>Bienvenido al Dashboard</p>
+      {/* contenido */}
     </div>
   );
 };

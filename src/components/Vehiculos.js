@@ -12,7 +12,7 @@ const Vehiculos = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <h2>Vehículos</h2>
       {vehiculos.length === 0 ? (
         <p>No hay vehículos cargados.</p>

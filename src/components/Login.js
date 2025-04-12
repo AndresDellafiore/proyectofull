@@ -9,10 +9,19 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      // Aquí cambiamos 'email' por 'mail'
-      const response = await axios.post("http://localhost:5007/api/Client/Login", { mail: email, password });
+      const response = await axios.post("http://localhost:5007/api/Client/Login", {
+        mail: email,
+        password,
+      });
+
       if (response.status === 200) {
-        // Redirigir al Dashboard
+        // ✅ Guardamos estado de login solo si es exitoso
+        localStorage.setItem('isLoggedIn', 'true');
+
+        // 🚀 Disparamos evento para que Navbar actualice menú
+        window.dispatchEvent(new Event("loginChanged"));
+
+        // Redirigir al dashboard
         navigate('/dashboard');
       }
     } catch (error) {
@@ -42,4 +51,3 @@ const Login = () => {
 };
 
 export default Login;
-
