@@ -166,3 +166,5 @@ C:\AvellanedaParking\source\repos\ARSWebAPIServices\ARSWebAPIServices\obj\Debug\
 C:\AvellanedaParking\source\repos\ARSWebAPIServices\ARSWebAPIServices\obj\Debug\net8.0\ARSWebAPIServices.pdb
 C:\AvellanedaParking\source\repos\ARSWebAPIServices\ARSWebAPIServices\obj\Debug\net8.0\ARSWebAPIServices.genruntimeconfig.cache
 C:\AvellanedaParking\source\repos\ARSWebAPIServices\ARSWebAPIServices\obj\Debug\net8.0\ref\ARSWebAPIServices.dll
+C:\AvellanedaParking\source\repos\ARSWebAPIServices\ARSWebAPIServices\obj\Debug\net8.0\ARSWebAPIServices.sourcelink.json
+C:\AvellanedaParking\source\repos\ARSWebAPIServices\ARSWebAPIServices\bin\Debug\net8.0\BCrypt.Net-Next.dll

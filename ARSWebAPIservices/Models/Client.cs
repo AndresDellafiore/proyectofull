@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace ARSWebAPIServices.Models
 {
     [Table("Client")]
@@ -28,11 +27,15 @@ namespace ARSWebAPIServices.Models
         [EmailAddress]
         public string Mail { get; set; }
 
-        // Relación 1:1 con Account
+        [Required]
+        public string Password { get; set; }
+
         public Account Account { get; set; }
 
-        // Relación 1:N con Vehicles
         public ICollection<Vehicle> Vehicles { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public bool IsAdmin { get; set; } = false;
     }
 }
-

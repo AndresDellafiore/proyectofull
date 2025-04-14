@@ -6,7 +6,7 @@ namespace ARSWebAPIServices.Models
 {
     [Table("Vehicle")]
     public class Vehicle
-    {        
+    {
         [Key]
         public int VehicleId { get; set; }
 
@@ -24,5 +24,8 @@ namespace ARSWebAPIServices.Models
 
         // Relación inversa
         public Client? Client { get; set; }
+
+        public int? Cochera { get; set; }  // nullable en caso de que esté vacío
     }
+
 }

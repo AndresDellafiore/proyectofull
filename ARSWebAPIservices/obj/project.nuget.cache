@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "DSYf7O+Xt8GEoPDn/kT4XSsTOW2KbQbtq7bL0+YRDqDw+hAkIs9MbPvGrMS2u86pAXqgilQQ2Of5yRUUL5bxrg==",
+  "dgSpecHash": "dnbnY31NDx9ncJQDzsSETGa1cT/m8/JxY+QP9EUs8tVKv8CTwf3tVQrUoI7XLvM3Ev3r5ZNsWwgpU3WiUnCeJA==",
   "success": true,
   "projectFilePath": "C:\\AvellanedaParking\\source\\repos\\ARSWebAPIServices\\ARSWebAPIServices\\ARSWebAPIServices.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Desarrollo\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Desarrollo\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\Desarrollo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Desarrollo\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Desarrollo\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "C:\\Users\\Desarrollo\\.nuget\\packages\\microsoft.build.framework\\17.8.3\\microsoft.build.framework.17.8.3.nupkg.sha512",

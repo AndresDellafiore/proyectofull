@@ -42,6 +42,11 @@ namespace ARSWebAPIServices.Controllers
                 .ToListAsync();
 
             return Ok(vehicles);
+
+            var L_Client = await dbContext.Clients
+                .Include(c => c.Account)
+                .Include(c => c.Vehicles)
+                .ToListAsync();
         }
     }
 }
