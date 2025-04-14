@@ -34,11 +34,16 @@ namespace ARSWebAPIServices.Controllers
         [Route("New")]
         public async Task<IActionResult> New([FromBody] Client cli)
         {
-            if (!string.IsNullOrWhiteSpace(cli.Password))
+            // Validación para asegurar que el campo Password no sea nulo ni vacío
+            if (string.IsNullOrEmpty(cli.Password))
             {
-                cli.Password = BCrypt.Net.BCrypt.HashPassword(cli.Password);
+                return BadRequest(new { message = "El campo 'Password' es obligatorio." });
             }
 
+            // Si el password se provee, se encripta antes de guardarlo
+            cli.Password = BCrypt.Net.BCrypt.HashPassword(cli.Password);
+
+            // Relacionar cuenta e vehículos, si existen
             if (cli.Account != null) cli.Account.Client = cli;
             if (cli.Vehicles != null && cli.Vehicles.Any())
             {
@@ -48,6 +53,7 @@ namespace ARSWebAPIServices.Controllers
                 }
             }
 
+            // Guardar el cliente en la base de datos
             await dbContext.Clients.AddAsync(cli);
             await dbContext.SaveChangesAsync();
 
