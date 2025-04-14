@@ -1,6 +1,8 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Login.css'; // 👈 Asegurate de tener este importado o agregalo
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,13 +17,8 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        // ✅ Guardamos estado de login solo si es exitoso
         localStorage.setItem('isLoggedIn', 'true');
-
-        // 🚀 Disparamos evento para que Navbar actualice menú
         window.dispatchEvent(new Event("loginChanged"));
-
-        // Redirigir al dashboard
         navigate('/dashboard');
       }
     } catch (error) {
@@ -31,21 +28,23 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input 
-        type="email" 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)} 
-        placeholder="Correo"
-      />
-      <input 
-        type="password" 
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)} 
-        placeholder="Contraseña"
-      />
-      <button onClick={handleLogin}>Ingresar</button>
+    <div className="login-container">
+      <div className="login-box">
+        <h2>Iniciar Sesión</h2>
+        <input 
+          type="email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
+          placeholder="Correo"
+        />
+        <input 
+          type="password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+          placeholder="Contraseña"
+        />
+        <button onClick={handleLogin}>Ingresar</button>
+      </div>
     </div>
   );
 };

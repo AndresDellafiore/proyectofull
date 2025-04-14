@@ -6,6 +6,7 @@ import Clientes from './components/Clientes';
 import Vehiculos from './components/Vehiculos';
 import Cuentas from './components/Cuentas';
 import Navbar from './components/Navbar';
+import PrivateRoute from './components/PrivateRoute'; // Asegúrate de importar PrivateRoute
 
 const App = () => {
   return (
@@ -15,23 +16,32 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        
+
         {/* Rutas protegidas */}
-        <Route path="/clientes" element={
-          <PrivateRoute>
-            <Clientes />
-          </PrivateRoute>
-        } />
-        <Route path="/vehiculos" element={
-          <PrivateRoute>
-            <Vehiculos />
-          </PrivateRoute>
-        } />
-        <Route path="/cuentas" element={
-          <PrivateRoute>
-            <Cuentas />
-          </PrivateRoute>
-        } />
+        <Route 
+          path="/clientes" 
+          element={
+            <PrivateRoute>
+              <Clientes />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/vehiculos" 
+          element={
+            <PrivateRoute>
+              <Vehiculos />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/cuentas" 
+          element={
+            <PrivateRoute>
+              <Cuentas />
+            </PrivateRoute>
+          } 
+        />
       </Routes>
     </Router>
   );

@@ -1,0 +1,59 @@
+.clientes-container {
+    padding: 30px;
+  }
+  
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .cliente-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .cliente-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .cliente-card h3 {
+    margin-bottom: 8px;
+  }
+  
+  .extra-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .vehiculo-info {
+    margin-top: 10px;
+    padding-left: 10px;
+    border-left: 3px solid #ccc;
+  }
+  
+  .pagination {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .pagination button {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .pagination button.active,
+  .pagination button:hover {
+    background: #0056b3;
+  }
+  

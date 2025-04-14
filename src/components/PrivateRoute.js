@@ -1,10 +1,17 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
+// Componente PrivateRoute para proteger las rutas
 const PrivateRoute = ({ children }) => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const isAuthenticated = localStorage.getItem('isLoggedIn') === 'true';
 
-  return isLoggedIn ? children : <Navigate to="/login" />;
+  // Si no está autenticado, redirige al login
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  // Si está autenticado, renderiza el componente pasado como "children"
+  return children;
 };
 
 export default PrivateRoute;
