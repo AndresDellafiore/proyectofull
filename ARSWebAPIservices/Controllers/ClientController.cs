@@ -1,4 +1,5 @@
 ﻿using ARSWebAPIServices.Models;
+using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -73,6 +74,19 @@ namespace ARSWebAPIServices.Controllers
             await dbContext.SaveChangesAsync();
 
             return Ok(new { message = "Cliente dado de baja lógicamente" });
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest login)
+        {
+            var client = await dbContext.Clients.FirstOrDefaultAsync(c => c.Mail == login.Mail);
+            if (client == null || !BCrypt.Net.BCrypt.Verify(login.Password, client.Password))
+            {
+                return Unauthorized(new { message = "Correo o contraseña incorrectos" });
+            }
+            return Ok(new { message = "Login exitoso", client });
+                       
         }
 
         [HttpPut]
