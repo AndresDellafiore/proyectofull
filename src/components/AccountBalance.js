@@ -1,6 +1,7 @@
 // src/components/AccountBalance.js
 import React, { useState, useEffect } from "react";
 import { getAccountBalance } from "../services/api";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AccountBalance = ({ clientId }) => {
   const [balance, setBalance] = useState(null);

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Clientes.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button, Tabs, Tab } from 'react-bootstrap';
 import ClienteForm from './ClienteForm';
 import ClienteModal from './ClienteModal'; // 👈 Asegúrate de tener este archivo
 
@@ -48,9 +50,8 @@ const Clients = () => {
   return (
     <div className="clientes-container">
       <h2>Clientes</h2>
-
-      <button onClick={() => { setClienteEditando(null); setShowForm(true); }}>+ Nuevo Cliente</button>
-
+      
+           <Button variant="primary" onClick={() => { setClienteEditando(null); setShowForm(true); }}>+ Nuevo Cliente</Button>
       {showForm && (
         <ClienteForm onClose={() => setShowForm(false)} clienteEditando={clienteEditando} reload={fetchClients} />
       )}

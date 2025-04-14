@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+// src/components/ClienteForm.js
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import CambioPasswordForm from "./CambioPasswordForm"; // Asegurate de tener este archivo creado
+import { Modal, Button, Form } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ClienteForm = ({ onClose = () => {}, reload = () => {}, clienteEditando = null }) => {
   const [cliente, setCliente] = useState({
@@ -10,6 +12,7 @@ const ClienteForm = ({ onClose = () => {}, reload = () => {}, clienteEditando = 
     telefonoParticular: "",
     telefonoCelular: "",
     mail: "",
+    password: "", // 🟡 Necesario para el endpoint POST
     isAdmin: false,
     account: {
       accountNumber: "",
@@ -18,25 +21,96 @@ const ClienteForm = ({ onClose = () => {}, reload = () => {}, clienteEditando = 
     vehicles: []
   });
 
-  const [vehiculo, setVehiculo] = useState({
-    marca: "",
-    modelo: "",
-    dominio: "",
-    color: ""
-  });
+  useEffect(() => {
+    if (clienteEditando) {
+      setCliente(clienteEditando);
+    }
+  }, [clienteEditando]);
 
-  const [mostrarCambioPassword, setMostrarCambioPassword] = useState(false);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCliente(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-  // Aquí puedes agregar la lógica para manejar el clienteEditando y otros estados.
-  // Esto es solo un ejemplo básico para que puedas empezar.
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (clienteEditando) {
+        await axios.put(`http://localhost:5007/api/Client/Edit`, cliente);
+      } else {
+        await axios.post(`http://localhost:5007/api/Client/New`, cliente);
+      }
+
+      reload();
+      onClose();
+    } catch (error) {
+      console.error("Error al guardar cliente:", error);
+      alert("Hubo un error al guardar el cliente. Ver consola para más detalles.");
+    }
+  };
 
   return (
-    <div>
-      <h2>{clienteEditando ? 'Editar Cliente' : 'Nuevo Cliente'}</h2>
-      {/* Formulario para ingresar los datos del cliente */}
-      {/* Aquí puedes agregar más campos o funcionalidad como lo necesites */}
-      <button onClick={onClose}>Cerrar</button>
-    </div>
+    <Modal show onHide={onClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>{clienteEditando ? "Editar Cliente" : "Nuevo Cliente"}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Nombre</Form.Label>
+            <Form.Control
+              type="text"
+              name="nombre"
+              value={cliente.nombre}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Apellido</Form.Label>
+            <Form.Control
+              type="text"
+              name="apellido"
+              value={cliente.apellido}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              name="mail"
+              value={cliente.mail}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          {/* Mostrar password solo si estamos creando uno nuevo */}
+          {!clienteEditando && (
+            <Form.Group className="mb-3">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                value={cliente.password}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          )}
+
+          <Button variant="primary" type="submit">
+            Guardar
+          </Button>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 };
 

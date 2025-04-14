@@ -1,5 +1,6 @@
 // src/components/VehicleTabs.js
 import React, { useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const VehicleTabs = ({ onAddVehicle }) => {
   const [vehicleBrand, setVehicleBrand] = useState("");

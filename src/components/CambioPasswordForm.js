@@ -1,6 +1,7 @@
 // CambioPasswordForm.js
 import React, { useState } from "react";
 import axios from "axios";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CambioPasswordForm = ({ clientId, onClose }) => {
   const [nuevaPassword, setNuevaPassword] = useState("");

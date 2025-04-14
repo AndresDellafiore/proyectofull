@@ -1,6 +1,7 @@
 // src/components/ClientsList.js
 import React, { useState, useEffect } from "react";
 import { getAllClients } from "../services/api";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ClientsList = () => {
   const [clients, setClients] = useState([]);

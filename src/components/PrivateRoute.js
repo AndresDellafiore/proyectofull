@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Componente PrivateRoute para proteger las rutas
 const PrivateRoute = ({ children }) => {
