@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Clientes.css';
-import ClienteForm from './ClienteForm'; // 👈 Asegurate de importar correctamente
+import ClienteForm from './ClienteForm';
+import ClienteModal from './ClienteModal'; // 👈 Asegúrate de tener este archivo
 
 const Clients = () => {
   const [clients, setClients] = useState([]);
-  const [expandedCard, setExpandedCard] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 6;
   const [showForm, setShowForm] = useState(false);
   const [clienteEditando, setClienteEditando] = useState(null);
 
@@ -26,10 +27,6 @@ const Clients = () => {
     }));
 
     setClients(cleaned);
-  };
-
-  const handleCardClick = (id) => {
-    setExpandedCard(expandedCard === id ? null : id);
   };
 
   const handleDelete = async (id) => {
@@ -62,28 +59,23 @@ const Clients = () => {
         {currentClients.map(client => (
           <div
             key={client.clientId}
-            className={`cliente-card ${expandedCard === client.clientId ? 'expanded' : ''}`}
-            onClick={() => handleCardClick(client.clientId)}
+            className="cliente-card"
+            onClick={() => setSelectedClient(client)}
           >
             <h3>Cochera: {client.vehicles[0]?.cochera ?? 'No asignada'}</h3>
             <p><strong>{client.nombre} {client.apellido}</strong></p>
-
-            {expandedCard === client.clientId && (
-              <div className="extra-info">
-                <p><strong>Email:</strong> {client.mail}</p>
-                <p><strong>Cuenta:</strong> {client.account?.accountNumber ?? 'No disponible'}</p>
-                <p><strong>Balance:</strong> ${client.account?.balance ?? 0}</p>
-                <p><strong>Administrador:</strong> {client.isAdmin ? 'Sí' : 'No'}</p>
-
-                <div className="card-actions">
-                  <button onClick={(e) => { e.stopPropagation(); handleEdit(client); }}>Editar</button>
-                  <button onClick={(e) => { e.stopPropagation(); handleDelete(client.clientId); }}>Baja</button>
-                </div>
-              </div>
-            )}
           </div>
         ))}
       </div>
+
+      {selectedClient && (
+        <ClienteModal
+          client={selectedClient}
+          onClose={() => setSelectedClient(null)}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
 
       <div className="pagination">
         {[...Array(totalPages).keys()].map(num => (
@@ -97,5 +89,3 @@ const Clients = () => {
 };
 
 export default Clients;
-
-
