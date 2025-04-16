@@ -1,65 +1,61 @@
-// src/components/Login.js
 import React, { useState } from 'react';
-import { Container, Form, Button, Card } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import logo from '../assets/logo.png';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/global.css';
+import '../styles/global.css'; // si quieres agregar estilos opcionales
 
-function Login({ onLogin }) {
+const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5263/api/auth/login', {
+      const response = await axios.post('http://localhost:5263/api/Auth/login', {
         email,
         password
       });
 
       const user = response.data;
       localStorage.setItem('user', JSON.stringify(user));
-      onLogin(); // Notificamos al componente App
-    } catch (err) {
-      alert('Correo o contraseña incorrectos');
+      navigate('/pacientes');
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      setError('Credenciales incorrectas');
     }
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100">
-      <Card className="p-4" style={{ width: '100%', maxWidth: '400px' }}>
-        <Card.Img variant="top" src={logo} className="mb-3" />
-        <Card.Body>
-          <Card.Title className="text-center">Inicio de Sesión</Card.Title>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Correo electrónico</Form.Label>
-              <Form.Control
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Button variant="success" type="submit" className="w-100">
-              Entrar
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
+    <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
+      <div className="card p-4 shadow" style={{ minWidth: '350px', maxWidth: '400px' }}>
+        <h3 className="text-center mb-3">Iniciar sesión</h3>
+        {error && <div className="alert alert-danger">{error}</div>}
+        <form onSubmit={handleLogin}>
+          <div className="mb-3">
+            <label className="form-label">Correo electrónico</label>
+            <input
+              type="email"
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Contraseña</label>
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">Ingresar</button>
+        </form>
+      </div>
+    </div>
   );
-}
+};
 
 export default Login;

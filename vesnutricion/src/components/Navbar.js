@@ -1,43 +1,39 @@
-// src/components/Navbar.js
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/global.css';
+import { Link } from 'react-router-dom';
 
-function Navbar({ user, onLogout }) {
-  const navigate = useNavigate();
+const Navbar = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const handleLogout = () => {
     localStorage.removeItem('user');
-    onLogout();
-    navigate('/');
+    window.location.href = '/login';
   };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container-fluid">
-        <NavLink className="navbar-brand" to="/">Inicio</NavLink>
-
-        <div className="navbar-nav">
-          {user?.isAdmin && (
-            <>
-              <NavLink to="/admin/PacientesPage" className="nav-link">Pacientes</NavLink>
-              <NavLink to="/admin/historias" className="nav-link">Historias Clínicas</NavLink>
-              <NavLink to="/admin/calendario-turnos" className="nav-link">Calendario</NavLink>
-            </>
-          )}
-        </div>
-
-        <div className="ms-auto">
-          {user && (
-            <button className="btn btn-outline-danger" onClick={handleLogout}>
-              Cerrar sesión
-            </button>
-          )}
+      <div className="container">
+        <Link className="navbar-brand" to="/">VesNutricion</Link>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ml-auto">
+            {user && user.isAdmin ? (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/pacientes">Pacientes</Link>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-danger" onClick={handleLogout}>Cerrar sesión</button>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item">
+                <button className="btn btn-danger" onClick={handleLogout}>Cerrar sesión</button>
+              </li>
+            )}
+          </ul>
         </div>
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;

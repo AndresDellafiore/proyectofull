@@ -1,137 +1,69 @@
-// admin/components/ModalEditPaciente.js
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/global.css';
 
-function ModalEditPaciente({ show, onHide, paciente }) {
-  const [formData, setFormData] = useState({
-    firstName: paciente.firstName,
-    lastName: paciente.lastName,
-    dni: paciente.dni,
-    address: paciente.address,
-    obraSocial: paciente.obraSocial,
-    phoneFixed: paciente.phoneFixed,
-    phoneCell: paciente.phoneCell,
-    comments: paciente.comments,
-  });
+const ModalEditPaciente = ({ patientId, onClose }) => {
+  const [patient, setPatient] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  useEffect(() => {
+    const fetchPatient = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5263/api/Users/${patientId}`);
+        setPatient(response.data);
+      } catch (error) {
+        console.error('Error al obtener los datos del paciente:', error);
+      }
+    };
+    fetchPatient();
+  }, [patientId]);
+
+  const handleSave = async () => {
+    try {
+      await axios.put(`http://localhost:5263/api/Users/${patientId}`, patient);
+      onClose();
+    } catch (error) {
+      console.error('Error al guardar los cambios:', error);
+    }
   };
 
-  const handleSave = () => {
-    axios.put(`http://localhost:5263/api/Users/${paciente.id}`, formData)
-      .then(() => {
-        onHide();
-      })
-      .catch((err) => console.error(err));
-  };
+  if (!patient) return null;
 
   return (
-    <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton>
-        <Modal.Title>Editar Paciente</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <Form.Group controlId="formFirstName">
-            <Form.Label>Nombre</Form.Label>
-            <Form.Control
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formLastName">
-            <Form.Label>Apellido</Form.Label>
-            <Form.Control
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formDni">
-            <Form.Label>DNI</Form.Label>
-            <Form.Control
-              type="text"
-              name="dni"
-              value={formData.dni}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formAddress">
-            <Form.Label>Dirección</Form.Label>
-            <Form.Control
-              type="text"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formObraSocial">
-            <Form.Label>Obra Social/Prepaga</Form.Label>
-            <Form.Control
-              type="text"
-              name="obraSocial"
-              value={formData.obraSocial}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formPhoneFixed">
-            <Form.Label>Teléfono Fijo</Form.Label>
-            <Form.Control
-              type="text"
-              name="phoneFixed"
-              value={formData.phoneFixed}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formPhoneCell">
-            <Form.Label>Teléfono Celular</Form.Label>
-            <Form.Control
-              type="text"
-              name="phoneCell"
-              value={formData.phoneCell}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formComments">
-            <Form.Label>Comentarios</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="comments"
-              value={formData.comments}
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Cerrar
-        </Button>
-        <Button variant="primary" onClick={handleSave}>
-          Guardar cambios
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <div className="modal show" style={{ display: 'block' }} aria-labelledby="exampleModalLabel">
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Editar Paciente</h5>
+            <button type="button" className="btn-close" onClick={onClose}></button>
+          </div>
+          <div className="modal-body">
+            <div className="mb-3">
+              <label className="form-label">Nombre</label>
+              <input
+                type="text"
+                className="form-control"
+                value={patient.firstName}
+                onChange={(e) => setPatient({ ...patient, firstName: e.target.value })}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Apellido</label>
+              <input
+                type="text"
+                className="form-control"
+                value={patient.lastName}
+                onChange={(e) => setPatient({ ...patient, lastName: e.target.value })}
+              />
+            </div>
+            {/* Aquí irían otros campos editables, como dirección, teléfono, etc. */}
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" onClick={onClose}>Cerrar</button>
+            <button type="button" className="btn btn-primary" onClick={handleSave}>Guardar cambios</button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default ModalEditPaciente;

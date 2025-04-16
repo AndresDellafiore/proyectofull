@@ -1,21 +1,27 @@
-// admin/components/PacienteCard.js
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/global.css';
+import { Link } from 'react-router-dom';
 
-function PacienteCard({ paciente, onClick }) {
+const PacienteCard = ({ patient }) => {
+  const user = JSON.parse(localStorage.getItem('user'));
+
   return (
-    <Card className="mb-3">
-      <Card.Body>
-        <Card.Title>{paciente.fullName}</Card.Title>
-        <Card.Text>Role: {paciente.role}</Card.Text>
-        <Button variant="info" onClick={onClick}>
-          Ver más
-        </Button>
-      </Card.Body>
-    </Card>
+    <div className="col-12 col-md-4 mb-4">
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">{patient.fullName}</h5>
+          <p className="card-text">DNI: {patient.dni}</p>
+          <p className="card-text">Obra Social: {patient.insuranceName}</p>
+          <p className="card-text">Teléfono: {patient.phone}</p>
+          {user && user.isAdmin && (
+            <div className="btn-group">
+              <Link to={`/editar-paciente/${patient.id}`} className="btn btn-warning">Editar</Link>
+              <button className="btn btn-danger">Baja lógica</button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default PacienteCard;
