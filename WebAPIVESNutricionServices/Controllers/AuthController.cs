@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAPIVESNutricionServices.Models;
+
 
 namespace WebAPIVESNutricionServices.Controllers
 {
@@ -14,38 +16,16 @@ namespace WebAPIVESNutricionServices.Controllers
             _context = context;
         }
 
+        // POST: api/Auth/login
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public IActionResult Login([FromBody] LoginModel login)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == request.Email);
-            if (user == null)
-            {
-                return Unauthorized(new { message = "Correo o contraseña incorrectos" });
-            }
+            var user = _context.Users
+                               .FirstOrDefault(u => u.Email == login.Email && u.Password == login.Password && u.IsActive);
 
-            if (BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
-            {
-                return Ok(new
-                {
-                    user.Id,
-                    user.FullName,
-                    user.Email,
-                    user.IsAdmin
-                });
-            }
-            else
-            {
-                return Unauthorized(new { message = "Correo o contraseña incorrectos" });
-            }
+            if (user == null) return Unauthorized("Credenciales incorrectas");
+
+            return Ok(user);
         }
     }
-
-    public class LoginRequest
-    {
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
 }
-
-
-

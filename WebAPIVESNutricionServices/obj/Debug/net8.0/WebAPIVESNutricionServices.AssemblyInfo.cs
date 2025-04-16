@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebAPIVESNutricionServices")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0487d75a2ca39dc7f961ba8edaeabb3bdcc1b084")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f2b00ff16265c1e5c77c98e0902de9c772818846")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebAPIVESNutricionServices")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebAPIVESNutricionServices")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -17,65 +17,40 @@ namespace WebAPIVESNutricionServices.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers([FromQuery] bool? isAdmin = null)
+        public IActionResult GetUsers()
         {
-            var query = _context.Users.AsQueryable().Where(u => u.IsActive);
-
-            if (isAdmin.HasValue)
-                query = query.Where(u => u.IsAdmin == isAdmin.Value);
-
-            return await query.ToListAsync();
+            var users = _context.Users.Where(u => u.IsActive).ToList();
+            return Ok(users);
         }
 
-        // POST: api/Users
-        [HttpPost]
-        public async Task<ActionResult<User>> Post([FromBody] User user)
-        {
-            // Encriptamos la contraseña antes de guardar
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-        }
-
-        // GET: api/Users/5
+        // GET: api/Users/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public IActionResult GetUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user;
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null) return NotFound();
+            return Ok(user);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Users/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User updatedUser)
+        public IActionResult PutUser(int id, User user)
         {
-            if (id != updatedUser.Id)
-            {
-                return BadRequest();
-            }
+            if (id != user.Id) return BadRequest();
+            _context.Entry(user).State = EntityState.Modified;
+            _context.SaveChanges();
+            return NoContent();
+        }
 
-            var existing = await _context.Users.FindAsync(id);
-            if (existing == null || !existing.IsActive)
-            {
-                return NotFound();
-            }
+        // DELETE: api/Users/{id}
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null) return NotFound();
 
-            existing.FullName = updatedUser.FullName;
-            existing.Email = updatedUser.Email;
-            existing.Password = updatedUser.Password;
-            existing.Role = updatedUser.Role;
-
-            await _context.SaveChangesAsync();
-
+            user.IsActive = false;  // Baja lógica
+            _context.SaveChanges();
             return NoContent();
         }
     }
