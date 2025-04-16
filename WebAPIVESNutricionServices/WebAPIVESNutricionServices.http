@@ -1,0 +1,6 @@
+@WebAPIVESNutricionServices_HostAddress = http://localhost:5263
+
+GET {{WebAPIVESNutricionServices_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
