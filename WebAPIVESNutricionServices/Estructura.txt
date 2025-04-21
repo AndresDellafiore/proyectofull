@@ -1,0 +1,27 @@
+﻿| 
+├── appsettings.Json 
+│ 
+├── Program.cs
+│
+├── /Controllers 
+    | 
+    ├── AppointmentsController.cs 
+    │ 
+    ├── AuthController.cs
+    | 
+    ├── TestController.cs
+    │ 
+    ├── UserController.cs  
+    │ 
+├── /Models 
+    │ 
+    ├── Appointment.cs
+    │ 
+    ├── ArsvesNutricionDbContext.cs 
+    │ 
+    ├── LoginModel.cs
+    │ 
+    ├── User.cs
+    
+
+
