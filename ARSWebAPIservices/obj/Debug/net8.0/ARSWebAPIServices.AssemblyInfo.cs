@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ARSWebAPIServices")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+071083813597b9053e4dc3f9089d92edfec78246")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ecb170dfec636064340e80303a28bedbd89ca49")]
 [assembly: System.Reflection.AssemblyProductAttribute("ARSWebAPIServices")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ARSWebAPIServices")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

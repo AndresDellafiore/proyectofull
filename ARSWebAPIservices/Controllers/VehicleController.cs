@@ -1,4 +1,5 @@
-﻿using ARSWebAPIServices.Models;
+﻿// Controlles/VehicleController.cs
+using ARSWebAPIServices.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,15 @@ namespace ARSWebAPIServices.Controllers
             return Ok(new { message = "Vehículo agregado correctamente" });
         }
 
+        // GET: api/Vehicle/List
+        [HttpGet]
+        [Route("List")]
+        public async Task<IActionResult> ListAllVehicles()
+        {
+            var vehicles = await dbContext.Vehicles.ToListAsync();
+            return Ok(vehicles);
+        }
+
         // Opcional: listar vehículos de un cliente
         [HttpGet]
         [Route("ListByClient/{clientId:int}")]
@@ -42,12 +52,23 @@ namespace ARSWebAPIServices.Controllers
                 .ToListAsync();
 
             return Ok(vehicles);
+        }
 
-            var L_Client = await dbContext.Clients
-                .Include(c => c.Account)
-                .Include(c => c.Vehicles)
-                .ToListAsync();
+        // GET: api/Vehicle/{vehicleId}
+        [HttpGet]
+        [Route("{vehicleId:int}")]
+        public async Task<IActionResult> GetVehicleDetails(int vehicleId)
+        {
+            var vehicle = await dbContext.Vehicles
+                .Where(v => v.VehicleId == vehicleId)
+                .FirstOrDefaultAsync();
+
+            if (vehicle == null)
+            {
+                return NotFound(new { message = "Vehículo no encontrado" });
+            }
+
+            return Ok(vehicle);
         }
     }
 }
-

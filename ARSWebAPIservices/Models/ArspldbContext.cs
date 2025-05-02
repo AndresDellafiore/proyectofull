@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// /Models/ArspldbContext.cs
+using Microsoft.EntityFrameworkCore;
 
 namespace ARSWebAPIServices.Models
 {
@@ -12,13 +13,11 @@ namespace ARSWebAPIServices.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Relación 1 a 1 entre Client y Account
             modelBuilder.Entity<Client>()
                 .HasOne(c => c.Account)
                 .WithOne(a => a.Client)
                 .HasForeignKey<Account>(a => a.ClientId);
 
-            // Relación 1 a muchos entre Client y Vehicle
             modelBuilder.Entity<Client>()
                 .HasMany(c => c.Vehicles)
                 .WithOne(v => v.Client)

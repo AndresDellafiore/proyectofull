@@ -1,5 +1,6 @@
-﻿using ARSWebAPIServices.Models;
-using Microsoft.AspNetCore.Http;
+﻿// Controllers/AccountControllers.cs
+// Controllers/AccountController.cs
+using ARSWebAPIServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,6 @@ namespace ARSWebAPIServices.Controllers
             dbContext = _dbContext;
         }
 
-        // GET: api/Account/GetByClient/5
         [HttpGet]
         [Route("GetByClient/{clientId:int}")]
         public async Task<IActionResult> GetByClient(int clientId)
@@ -28,7 +28,6 @@ namespace ARSWebAPIServices.Controllers
             return Ok(account);
         }
 
-        // PUT: api/Account/Update
         [HttpPut]
         [Route("Update")]
         public async Task<IActionResult> Update([FromBody] Account account)
@@ -37,28 +36,35 @@ namespace ARSWebAPIServices.Controllers
             if (existingAccount == null)
                 return NotFound(new { message = "Cuenta no encontrada" });
 
-            // actualiza campos necesarios
-            existingAccount.AccountNumber = account.AccountNumber;
             existingAccount.Balance = account.Balance;
-
             await dbContext.SaveChangesAsync();
+
             return Ok(new { message = "Cuenta actualizada correctamente" });
         }
 
-        // POST: api/Account/CreateForClient/5
         [HttpPost]
         [Route("CreateForClient/{clientId:int}")]
-        public async Task<IActionResult> CreateForClient(int clientId, [FromBody] Account account)
+        public async Task<IActionResult> CreateForClient(int clientId)
         {
             var client = await dbContext.Clients.FindAsync(clientId);
             if (client == null)
                 return NotFound(new { message = "Cliente no encontrado" });
 
-            account.ClientId = clientId;
-            await dbContext.Accounts.AddAsync(account);
+            // Número de cuenta incremental
+            var existingCount = await dbContext.Accounts.CountAsync(a => a.ClientId == clientId);
+            var newAccountNumber = $"{clientId}/{(existingCount + 1):D4}";
+
+            var newAccount = new Account
+            {
+                ClientId = clientId,
+                AccountNumber = newAccountNumber,
+                Balance = 0
+            };
+
+            await dbContext.Accounts.AddAsync(newAccount);
             await dbContext.SaveChangesAsync();
 
-            return Ok(new { message = "Cuenta creada correctamente" });
+            return Ok(new { message = "Cuenta creada correctamente", account = newAccount });
         }
     }
 }

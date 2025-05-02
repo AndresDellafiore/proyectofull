@@ -1,8 +1,10 @@
-﻿using ARSWebAPIServices.Models;
-using Azure.Core;
-using Microsoft.AspNetCore.Http;
+﻿// Controllers/ClientController.cs
+// Controllers/ClientController.cs
+using ARSWebAPIServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ARSWebAPIServices.Controllers
 {
@@ -21,29 +23,24 @@ namespace ARSWebAPIServices.Controllers
         [Route("List")]
         public async Task<IActionResult> Get()
         {
-            var L_Client = await dbContext.Clients
+            var clients = await dbContext.Clients
                 .Where(c => !c.IsDeleted)
                 .Include(c => c.Account)
                 .Include(c => c.Vehicles)
                 .ToListAsync();
 
-            return Ok(L_Client);
+            return Ok(clients);
         }
 
         [HttpPost]
         [Route("New")]
         public async Task<IActionResult> New([FromBody] Client cli)
         {
-            // Validación para asegurar que el campo Password no sea nulo ni vacío
             if (string.IsNullOrEmpty(cli.Password))
-            {
                 return BadRequest(new { message = "El campo 'Password' es obligatorio." });
-            }
 
-            // Si el password se provee, se encripta antes de guardarlo
             cli.Password = BCrypt.Net.BCrypt.HashPassword(cli.Password);
 
-            // Relacionar cuenta e vehículos, si existen
             if (cli.Account != null) cli.Account.Client = cli;
             if (cli.Vehicles != null && cli.Vehicles.Any())
             {
@@ -53,7 +50,6 @@ namespace ARSWebAPIServices.Controllers
                 }
             }
 
-            // Guardar el cliente en la base de datos
             await dbContext.Clients.AddAsync(cli);
             await dbContext.SaveChangesAsync();
 
@@ -64,7 +60,23 @@ namespace ARSWebAPIServices.Controllers
         [Route("Edit")]
         public async Task<IActionResult> Edit([FromBody] Client cli)
         {
-            dbContext.Entry(cli).State = EntityState.Modified;
+            var existing = await dbContext.Clients
+                .Include(c => c.Account)
+                .Include(c => c.Vehicles)
+                .FirstOrDefaultAsync(c => c.ClientId == cli.ClientId);
+
+            if (existing == null)
+                return NotFound(new { message = "Cliente no encontrado" });
+
+            // Actualiza solo campos modificables
+            existing.Nombre = cli.Nombre;
+            existing.Apellido = cli.Apellido;
+            existing.Domicilio = cli.Domicilio;
+            existing.Mail = cli.Mail;
+            existing.TelefonoCelular = cli.TelefonoCelular;
+            existing.TelefonoParticular = cli.TelefonoParticular;
+            existing.IsAdmin = cli.IsAdmin;
+
             await dbContext.SaveChangesAsync();
             return Ok(new { message = "Cliente modificado correctamente" });
         }
@@ -92,7 +104,6 @@ namespace ARSWebAPIServices.Controllers
                 return Unauthorized(new { message = "Correo o contraseña incorrectos" });
             }
             return Ok(new { message = "Login exitoso", client });
-                       
         }
 
         [HttpPut]
@@ -130,3 +141,4 @@ namespace ARSWebAPIServices.Controllers
         public string AdminPassword { get; set; }
     }
 }
+
