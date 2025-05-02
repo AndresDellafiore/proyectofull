@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import Clientes from './components/Clientes';
-import Vehiculos from './components/Vehiculos';
-import Cuentas from './components/Cuentas';
+import Dashboard from './pages/Dashboard';
+import Clientes from './pages/Clientes';
+import Vehiculos from './pages/Vehiculos';
+import Cuentas from './pages/Cuentas';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute'; // Asegúrate de importar PrivateRoute
+import VehiculoDetalle from './components/VehiculoDetalle';  // Importa el componente de detalles del vehículo
 
 const App = () => {
   return (
@@ -31,6 +32,15 @@ const App = () => {
           element={
             <PrivateRoute>
               <Vehiculos />
+            </PrivateRoute>
+          } 
+        />
+        {/* Ruta para ver los detalles de un vehículo */}
+        <Route 
+          path="/vehiculo/:vehicleId"  // Agrega un parámetro para el ID del vehículo
+          element={
+            <PrivateRoute>
+              <VehiculoDetalle />
             </PrivateRoute>
           } 
         />

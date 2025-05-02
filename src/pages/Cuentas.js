@@ -1,4 +1,4 @@
-// src/components/Cuentas.js
+// src/pages/Cuentas.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,7 +18,7 @@ const Cuentas = () => {
       {cuentas.length === 0 ? (
         <p>No hay cuentas cargadas.</p>
       ) : (
-        <table>
+        <table className="table table-striped">
           <thead>
             <tr>
               <th>Número de Cuenta</th>
